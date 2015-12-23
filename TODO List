@@ -40,11 +40,12 @@ iv. ratings
 
 
 <TODO Push the newly created user.json, hotels.json and review.json >
-
+FIles too big, cannot push.
 
 At the end of this also note down the total count of hotels and total count of users.
 
-<TODO Please put down the total number of hotels and total number of users here>
+Total No of Hotels:- 11797
+Total No of Users:- 781237
 
 Essentially this will be our full adjacency
 matrix. (u x h ). He wanted us to check if this uxh can fit in memory or not too large, then doing svd and stuff  might not be 
@@ -63,6 +64,14 @@ Convert this code to Spark and run it for our graph. Tell me what you get as res
 4. Creating examples and storing them. Understand what the code is doing and do it. When picking examples,
 there are two conditions given in the report based on which they did the filtering:
 
+Results after Creating Examples.json
+User active now have positives in: 0.556326289186
+User active now have negatives in: 0.349399697199
+
+User positives after 3rd Hop: 0.544457978076
+User negatives after 3rd Hop: 0.330241827702
+Data skew: 0.00130911519042
+
 a. Only taking users that have been active (i.e. that have written a review) in the last six months.This removes 12% of positive examples and 62% of negative examples.
 b. Only taking businesses at distance 3 from the current user as candidate edges. This further removes 22% of positive examples and 66% of negative examples.
 
@@ -73,6 +82,8 @@ Be very clear about the test and train examples. Tell me what dates you are usin
 you have done that here :
 
 <TODO Complete the dates> 
+Training T1 = 2010-2-15, t2= 2010-9-15, Last Active Date= 2009-1-1(rather than six months I took 1 year)
+Test T1= 2012-2-15 t2= 2012-9-15 Last Active Date= 2010-1-1
 
 
 5. Similarity code (Should be in Spark. Nothing else would suffice)

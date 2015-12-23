@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 import glob, json
 import dateutil.parser
@@ -34,12 +34,14 @@ def make_user_list(review_json, user_json, date_json, hotel_json):
     hotels = {}
     for review, key in review_json.iteritems():
         userid = key["Author"]
-        user_loc[userid] = {"ReviewCount": user_json[userid], 
-                            "LatestDate": max(date_json[userid]) if date_json[userid] else -1,
+        user_loc[userid] = {"AuthorID": key["Author"], 
+                            "ReviewCount": user_json[userid], 
+                            "LastReviewDate": max(date_json[userid]) if date_json[userid] else -1,
                             "UserLocation": key["Author Location"]}
         
         hotelid = key["HotelID"]
-        hotels[hotelid] = {"ReviewCount": hotel_json[hotelid],
+        hotels[hotelid] = {"HotelID": key["HotelID"],
+                           "ReviewCount": hotel_json[hotelid],
                            "HotelLocation": key["HotelLocation"]}
     
     write_json(user_loc, "./data/created/users.json")

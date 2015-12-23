@@ -84,6 +84,33 @@ Num edges: 1004603
 (732365 users) * (11229 hotels) = 8.224e+09 candidate edges
 30617 edges, 0.00037% of candidate edges
 
+Total Graph Metrices:
+Graph has 793034 nodes
+Graph has 1088791 edges
+Graph is connected? False
+Diameter is: 10.000000
+MLE Alpha: 1.559986341
+Average degree of a node: 1.372944
+Size: 2 - Number of Components: 405
+Size: 3 - Number of Components: 105
+Size: 4 - Number of Components: 42
+Size: 5 - Number of Components: 38
+Size: 6 - Number of Components: 15
+Size: 7 - Number of Components: 8
+Size: 8 - Number of Components: 6
+Size: 9 - Number of Components: 16
+Size: 10 - Number of Components: 5
+Size: 11 - Number of Components: 7
+Size: 12 - Number of Components: 1
+Size: 13 - Number of Components: 3
+Size: 14 - Number of Components: 1
+Size: 17 - Number of Components: 1
+Size: 18 - Number of Components: 1
+Size: 20 - Number of Components: 1
+Size: 21 - Number of Components: 1
+Size: 25 - Number of Components: 1
+Size: 790920 - Number of Components: 1
+
 a. Only taking users that have been active (i.e. that have written a review) in the last six months.This removes 12% of positive examples and 62% of negative examples.
 b. Only taking businesses at distance 3 from the current user as candidate edges. This further removes 22% of positive examples and 66% of negative examples.
 

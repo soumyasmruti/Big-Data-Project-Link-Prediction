@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[10]:
+# In[11]:
 
 import json, datetime
 import os
@@ -73,7 +73,7 @@ def make_graph(t1, t2, out):
         write_json(review_data, out+"review.json")
         
 if __name__ == '__main__':
-    make_graph(datetime.date(2010, 2, 15), datetime.date(2010, 9, 15), './data/train/')
+    make_graph(datetime.date(2011, 2, 15), datetime.date(2011, 9, 15), './data/train/')
     make_graph(datetime.date(2012, 2, 15), datetime.date(2012, 9, 15), './data/test/')
     
 

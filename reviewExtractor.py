@@ -66,4 +66,5 @@ def loadInputFile():
             
     write_json(newdata, "./data/created/reviews.json")
 
-loadInputFile()
+if __name__ == '__main__':
+    loadInputFile()

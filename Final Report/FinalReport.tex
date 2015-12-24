@@ -217,115 +217,69 @@ The way users review hotels evolves over time and so test and training may have 
 
 $<<<<<<<<<<<<< $TO BE COMPLETED \\
 I did not understand what is being done there. But I realize it is important for the supervised learning part. So please kindly fill in your understanding and then tell what those values represent \\
+Also\\
+describe\\
+about \\
+the\\
+matrix.json file\\
+and \\
+edges.txt\\
+which gets created\\
+in this \\
+section\\
+I don't understand \\
+what \\
+they are\\
+doing\\
+
 $>>>>>>>>>>>>>>>>>>>>>>$
 
-\subsection{Real valued features modification}
-The features, which have real values, were grouped in two ranges: the values above the median were mapped to a value 1 and the values which were below the median were mapped to a value -1.
 
-%\subsection{Derived Features creation}
-\subsection{Baselined features}
-Kaggle had provided a basline model for this problem. It had six features from the dataset to represent each post on the network as a vector of features. The six features are listed below alongwith a short explanation of their importance:
-\begin{enumerate}
-	\item \textbf{OwnerUndeletedanswersAtPostCreation:}count of answers posts the user had made that were undeleted when that row?s question was submitted
-	\item \textbf{BodyLength:} This is the initial body length including
-its code blocks lenth.
-	\item \textbf{ReputationAtPostCreation:}User reputation at  post creation time.
-	\item \textbf{NumTags:}Number of tags that the assigns to the post. Its maximum value is 5 per post.
-	\item \textbf{TitleLength:}Title length of the post.
-    \item \textbf{AgeofPost:} The difference in days between the system date and post creation date.
-\end{enumerate}
+\section{Similarity Measures for Link Prediction in Bipartite Graphs}
 
-These baselined features do not take into account the context of the post. Apart from the baselined features, information about the user was also available. The user information could also be related to the fact if a question will be closed or not. For instance if the user who had posted a question is a relatively new member and if the baselined feature values are relatively low, then chances are that the question posted by him might be predicted as one of Off-Topic, Not Constructive, Not a Real Question or Too Localized.
+\begin{itemize}
 
-\subsection{Post features}
+\item Similarity metrics can be used to compute the score of each candidate edge or potential links which might appear in future.
 
-The actual post made on the site contains several meta data information. The text in the post could be represented as a vector using the tf-idf-weight technique or the Latent  Dirichlet Allocation(LDA). We did not explore on the text features as the baselined feature did not have them and also it involved some amount of work, which we could have implemented had we had more time to run our experiments. Some of the important features from the post which is used in our prediction are provided below:
+\item Metrics used in \cite{four} compare the neighbors of two nodes in the edge. But to make it for bipartite graphs we have to modify it. Because of the property of bipartite graphs nodes on the same side or neighbors of nodes on opposite sides do not intersect. Hence we would want to model them in such a way that we have both sets of nodes to contain the same type of node i.e users/ hotels.
 
-\begin{enumerate}
-    \item \textbf{CBCount:}Number of code blocks in the post?s body.
-    \item \textbf{LinkCount:}Number of links in the post?s body
-    \item \textbf{NumberOfDigits:} Number of digits in the post's body.
-    \item \textbf{NumberOfSentences:}Number of sentences in the post
-body excluding code blocks.
-    \item NumberOfSentencesStartsWithI
-    \item \textbf{NumberOfSentencesStartsWithYou:} Number of Sentences in the post which start with ?you?.  Referring to different literature gave us the information that conversational questions are more often
-directed at readers by using word ?you?, while informational questions are more often focused on the asker by using the word ?I?
-    \item UpperTextLowerTextRatio
-    \item \textbf{FirstTextLineLength:}Length  of  the  first  text  line. Usually first short line implies personal appeal or greeting. The former case is the most interesting if it is peculiar to one of the close categories.
-    \item NumberOfInterrogativeWords
-    \item \textbf{NumberOfSentencesStartsWithInterrWords:}  Number of  sentences  which  starts  with  interrogative  words. This gives us an idea or information on whether the post is a question or not.
+\item To do this, we choose two sets S(x) and S(y) for our similarity metrics given nodes(x,y) on opposite sides of a graph. We define S(x) and S(y) in a way which is similar to how we used hop distances for creating examples.
 
-\end{enumerate}
+\begin{itemize}
+\item S(x) represents nodes which are 2 hops away from x. Effectively this produces nodes on same side of the network as x because traveling two hops would be equivalent to going to x's neighbor and then coming back again to the same side of x. 
 
-%\subsection{Tag features}
-%
-%Every question posted on Stackoverflow must be tagged with atleast one tag. The dataset also had five features for the tags namely
-%\begin{enumerate}
-%	\item Tag1
-%    \item Tag2
-%    \item Tag3
-%    \item Tag4
-%    \item Tag5
-%\end{enumerate}    
+\item S(y) represents y's neighbors. These represent nodes on opposite side of y, which is nothing but same side of x, because we have modeled the graph as bipartite in this case.
+\end{itemize}
 
-%During classification, we counted frequencies for  each  tag  and  each  category. We also counted frequencies  for  every  tag  pair. The  reason behind is that tags reflect some topics of the post.A pairwise occurrence of some tags can mean that two topics that lead to disputes may occur in one post.
+\item Both the sets from the description above will comprise of node's on the side of x.  This enables us to use them to compute distance metrics. We used two such metrics in our project:
 
-\subsection{Training and test examples information}
+\end{itemize}
 
+\subsection{Jaccard Similarity}
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{ |p{4cm}|p{2cm} |}
-		\hline
-		Training examples count		&	142681\\  \hline
-		Test examples count &	35670 \\  \hline
-		
-	\end{tabular}
-	\caption{Training and test examples count} 
-	\label{tab:dist1} 
-\end{table} 
+Jaccard Similarity is one of the widely and most commonly used similarity metrics. Jaccard similarity for our bipartite case is defined by:\\
+$\frac {| S(x) \cap S(y) |}{| S(x) \cup S(y) |}$ \\
 
+Jaccard similarity has the advantage that it is relatively easier to implement and also it is computationally less expensive than say cosine similarity for the same graph.
 
-%\subsection{Distribution of examples for each label on the entire dataset:}
-%Refer ~\ref{tab:dist} for the distribution.
+\subsection{Common Neighbors}
+Common neighbors is a metric which is commonly used in graph networks where similarity could be measured in terms of the neighbors. For the bipartite case, it is simply defined as :\\
+$|S(x) \cap S(y)|$
 
-\begin{table}[ht]
-	\begin{tabular}{ |p{3.5cm}|p{3.5cm} |}
-		\hline
-		\textbf {Label} & \textbf{Number of examples}\\ \hline
-		Open		&	89337\\  \hline
-		Not a Real Question	&	38622 \\  \hline
-		Not Constructive	&	20897 \\  \hline
-		Off Topic		&	20865\\  \hline
-		Too Localized		&	8910\\  \hline
-		
-	\end{tabular}
-	\caption{Distribution of training examples for each label on the total dataset (test +train)} 
-	\label{tab:dist} 
-\end{table} 
+\subsection{Intuition behind similarity metrics and link prediction}
 
+\begin{itemize}
+\item Computing similarity metrics over these set of nodes is effective for link prediction because S(x) returns nodes which are similar to x since they are 2 hops away and on same side of x.
 
-\section{Vowpal wabbit and scikit}
+\item In other words users who review hotels that you do are likely to be similar to you. It is also reasonable to further assume if lot of them review the same hotel and there is a large overlap between them and s(x) then you are also likely to review that hotel in future. This in a way helps us to uncover the new links which might appear in the graph in future which is our primary motive.
 
-\subsection{SVM using Vowpal Wabbit}
-Vowpal Wabbit (VW) \cite{vowpalwabbitwiki} is a library and algorithms developed at Yahoo! Research by John Langford. VW focuses on  the  approach  to  stream  the  examples  to  an  online-learning algorithm compared to the batch setting over many machines. As stated earlier we tried to compare the performance of vowpal wabbit and our classifier. We installed vowpal wabbit and implemented the SVM model
+\item As stated in the first, this is an assumption which we make and think is reasonable although it has been pointed out that this isn't so straightforward. But the bigger picture from this is, we learnt how to modify existing similarity metrics to be applied to a bipartite case, which was our primary goals.
 
-Vowpal Wabbit creates a model.vw after training with train data set. vw refers to vowpal wabbit extension. A csv to vw python program was also coded for this purpose since the input data was in csv format. After feeding the test data to the model, it creates a predictions dump for each example as shown in the figure ~\ref{fig:vw}. Refer ~\ref{tab:accuracy} for the accuracy obtained.
+\end{itemize}
 
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=1\linewidth]{vw.png}
-\captionof{figure}{Vowpal Wabbit(VW) predictions using SVM}
-\label{fig:vw}
-\end{center}
-\end{figure}
+\section{Random walk approach to Link Prediction}
 
-\subsection{Random Forest(RF) using scikit}
-scikit provides a very rich library sklearn.ensemble.RandomForestClassifier which was easy to use to build a random forest for our given dataset. Refer ~\ref{tab:accuracy} for the accuracy obtained.
-
-\section{Custom implementation}
-
-In this section we descibe our implementation of the different models and also their accuracies.
+In this section we describe how random walks can be used for link prediction in bipartite graphs.
 
 \subsection{Ideas used from the class/course material}
 %What ideas from the class did you use?

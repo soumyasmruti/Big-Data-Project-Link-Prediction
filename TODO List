@@ -61,6 +61,10 @@ Convert this code to Spark and run it for our graph. Tell me what you get as res
 
 <TODO Results of decomposition here or attach a text file with results >
 
+
+##################### Graph.txt values don't seem to right to me. Please cross check with the source code graph.txt. Also the graph.txt
+isn't sorted for some reason. Please figure that out #############################
+
 4. Creating examples and storing them. Understand what the code is doing and do it. When picking examples,
 there are two conditions given in the report based on which they did the filtering:
 
@@ -75,6 +79,15 @@ Data skew: 0.00137333432934
 Train Results:-
 Num nodes: 525174
 Num edges: 678711
+
+################  I am not sure what these values are supposed to mean, but the value of nodes and edges doesn't seem right. When 
+you 525174 nodes having just 678711 edges seems a bit wrong. The only other explanation could be that the graph hardly has 
+any connections or in other words most of the nodes have only 1 connection and very few nodes are connected to multiple nodes.
+
+Please check this value too 
+
+###############
+
 (514329 users) * (10845 hotels) = 5.578e+09 candidate edges
 36596 edges, 0.00066% of candidate edges
 

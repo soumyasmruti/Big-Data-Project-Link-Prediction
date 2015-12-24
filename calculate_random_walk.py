@@ -87,6 +87,9 @@ def random_walker(typeVar, date, bool_edge=False):
 
 if __name__ == '__main__':
     random_walker('train', datetime.date(2011, 2, 15), False)
+    random_walker('train', datetime.date(2011, 2, 15), True)
+
+    random_walker('test', datetime.date(2012, 2, 15), False)
     random_walker('test', datetime.date(2012, 2, 15), True)
 
 

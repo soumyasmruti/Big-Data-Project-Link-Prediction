@@ -4,11 +4,13 @@ TODO List( 10/24)
 
 1. Verify if the graph.txt values are correct. It doesn't look right to me. Verify it with source code and try to get some reasonable results.
 
-2. Complete the similarity code in Spark.
+Its correct, we cannot do anything more with this data.
+
+2. Complete the similarity code in Spark. Done
 
 3. Complete the svd code in Spark and also please run the code provided by Hari for UV decomposition and tell me what you understood from it.
 
-4. Complete the random_walks.py in Spark. you can follow the same thing.
+4. Complete the random_walks.py in Spark. you can follow the same thing. Done
 
 5. Need description for xgboost in the report to be written. Also need code for xgboost. Even if it is python code try to use it for our example. This is very important because this is something which we are doing by ourselves and it should be there to avoid any sort of suspicion. Please please please have this code. 
 

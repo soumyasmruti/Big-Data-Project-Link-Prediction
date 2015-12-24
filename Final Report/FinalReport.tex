@@ -15,7 +15,7 @@
 \date{\today}
 
 %make title bold and 14 pt font (Latex default is non-bold, 16 pt)
-\title{\Large \bf  Link Prediction in Bipartite Networks}
+\title{\Large \bf  Link Prediction in Bipartite Graphs}
 
 %for single author (just remove % characters)
 \author{
@@ -68,7 +68,7 @@ The primary motivation for selecting this project was based on two reasons:
 \item[] In this project we attempted to use our understanding of the concepts we learned in this course in line with different methods we came across the literature and used the following methods for link prediction in bipartite graph:
 \begin{enumerate}
 \item Similarity measures using Jaccard similarity and common neighbors
-\item Approach based on completing the matrix entries using SVD
+\item Approach based on completing the matrix entries using decomposition techniques
 \item A page rank style approach using Random walks.
 \item Supervised binary classification method.
 \end{enumerate}
@@ -251,6 +251,8 @@ $>>>>>>>>>>>>>>>>>>>>>>$
 \item S(y) represents y's neighbors. These represent nodes on opposite side of y, which is nothing but same side of x, because we have modeled the graph as bipartite in this case.
 \end{itemize}
 
+\item To compute 2 hop distance we used SNAP package's GetNodesAtHop() method to get our required values. Also SNAP modules other methods for graph processing proved useful. We found this package to be useful when we were stumbling across different datasets in our initial search for project datasets.
+
 \item Both the sets from the description above will comprise of node's on the side of x.  This enables us to use them to compute distance metrics. We used two such metrics in our project:
 
 \end{itemize}
@@ -265,6 +267,12 @@ Jaccard similarity has the advantage that it is relatively easier to implement a
 \subsection{Common Neighbors}
 Common neighbors is a metric which is commonly used in graph networks where similarity could be measured in terms of the neighbors. For the bipartite case, it is simply defined as :\\
 $|S(x) \cap S(y)|$
+
+
+\subsection{Note}
+ \begin{itemize}
+ \item For the similarity measures we tried implementing using both the nodes as S(x) in the sense, we had S(x) as users and then calculated all the hotel's neighbors and we also considered S(x) as hotels and then calculated all user's neighbors for S(y)
+ \end{itemize}
 
 \subsection{Intuition behind similarity metrics and link prediction}
 
@@ -281,98 +289,87 @@ $|S(x) \cap S(y)|$
 
 In this section we describe how random walks can be used for link prediction in bipartite graphs.
 
+\subsection{Definition}
+A random walk is a finite Markov chain that moves through a graph G=(V,E)
+
 \subsection{Ideas used from the class/course material}
-%What ideas from the class did you use?
-%What are the important ideas you explored?
-We wanted to model our problem to be a multi-class classification problem. Also having gone through different literature and considering the coding and effort involved, we decided to use one vs all decomposition technique as opposed to all vs all technique.
+\begin{itemize}
 
-On a lighter note, we performed cross-validation for selecting the decomposition technique by checking out the technique used by the top 10 finisher of this Kaggle problem contest and we probed on ideas on the below methods:
-\begin{enumerate}
-\itemsep0em
-\item Random forest using bagging \& one vs all.
-\item SVM using SGD \& one vs all.
-\item Ensembles of Decision trees \& one vs all.
-\end{enumerate}
+\item Suppose each edge/link in the given bipartite graph is assigned a weight w(u,v). Then based on the random surfer which we used for PageRank implementation, each edge (u,v) can also be assigned a transition probability $M_{u,v} =w(u,v) / d(u)$ where d(u)= $\sum_{(u,v) \epsilon E} w(u,v)$ is the weighted degree  of u or the number of outlinks from u.
 
-\subsubsection{Multiclass classification one vs all}
-In this problem we have five labels (open,OT,NC,NRQ,TL), hence we would have 5 decision trees (or) 5 SVM models if we were to build the multi-class classifier using our existing binary classifiers.For instance, Labels OT and the complement $\overline{OT}$ are decided by one of the models. Similarly, there would 4 other models. 
+\item These transition probabilities can be used  in random traversal of the graph  and when we run this process for a long time, it would eventually point to which nodes we might tend to visit. This in effect would tell us which hotel a user would likely review because an edge/link would be created based on the random walk's completion.
 
-Hence, we would use 5 binary classification methods to achieve multiclass classification for prediction of the status of each post.
+\item Convergence in this case would be slightly different from page rank case and also the transition probabilities at a stationary state would be given by $p_s= p_s M$
+ \end{itemize}
 
-The final predicted label corresponding to max value of the $H_{final}$ would be final prediction using one vs all decomposition.
+\subsection{Description and Implementation}
+\begin{itemize}
+\item We used random walks to produce a score for each candidate edge (u,v). We scored the edge with the stationary distribution probability of reaching v when running a random walk from u.
 
-\subsubsection{Random forest using bagging \& one vs all}
+\item To assign the weight to edges stated in the previous subsection, we found there were supervised methods of learning the weights and then applying them or using heuristics to decide the weight.
 
-We developed upon our class homework and we randomly sampled examples with replacement and created 5 data sets. We created decision trees for each of the 5 data sets as indicated in \cite{rfwiki}. That is the decision trees had only a subset of the total features available for the children.
+\item We preferred the approach which was simpler to us which was using heuristically chosen edge weights. In this case higher weights should be assigned to links which are likely to be more relevant. Relevance in our case would be the fact that the reviews written recently would tend to be a good reflection than a review which was written several years ago (for most cases and it is an assumption we make). This goes back to the point that as years go by people evolve and hotels evolve too and so the recently written reviews are likely to give a more accurate picture.
 
-After creation of such decision trees, final predicted label for any test example would be based on majority vote from these 5 decision trees. Then, as usual one vs all will be applied with majority vote as well.
+\item To take that into consideration we give each edge a weight of $w_{uv}$ =1/(c+$a_{uv}$) where $a_{uv} $is the age or the difference between current date and date of last review written by the user and c is a constant. 
 
-\subsubsection{SVM using SGD \& one vs all}
-Similar to the above model, we created 5 SVM models for each of the labels. For instance, OT and $\overline{OT}$ would have a SVM model.Each of the models had a weight vector.
+\item We made use of methods available in networkx package in python for constructing adjacency matrix and scipy and numpy packages for other processing.
 
-The final prediction for any example was the label corresponding to max value of wx. Stochastic Gradient Descent algorithm was used and the regularizer used in objective function in our implementation was C=1. Since we are in the online setting and fitting in all the examples at once wasn't necessarily good, stochastic gradient descent worked well by taking on example at a time and developed the prediction model.
+\item We used sc.parallelize() to create RDDs and used simple map reduce operations similar to our block matrix vector multiplications to calculate the probabilities and wrote the results to a json file.
 
-\subsubsection{Ensembles of Boosted Decision trees \& one vs all}
-We performed 5-fold cross-validation on training data. Boosting based on decision trees was harder than expected. We need to boost the examples which were misclassified, but our feature values were -1s and 1s. Hence, boosting or penalizing 1 or -1 is not possible respectively. This was not done primarily because of the fact that the complexity of the decision trees would increase as feature space.
+\end{itemize}
 
-We have partially implemented this since this suggestion was given in the intermediate report, but we couldn't eventually complete the suggested idea due to the above reason. 
+\section{Low rank approximation technique to Link Prediction}
 
-\section{Ideas Explored but not used}
-This section describes some of the ideas which we brainstormed and further wanted to explore. Although both of us couldn't concur with the views and validity of the idea proposed, we thought it would be good to mention it here:
-\subsection{Combination of SVM and Decision Tree}
-\begin{enumerate}
-\itemsep0em
-\item We would know the prediction label for each example from each of the methods - SVM and RF.
-\item We could consider the prediction values from the 4 methods  as feature vectors.
-\item Final prediction label for a example x would correspond to the label with higher wx, where w is the normalized prediction accuracy of that particular model
-\item Say accuracy of the methods 1,2,3,4 are a1,a2,a3,a4. Then the w1=a1/(a1+a2+a3+a4)
-\item But this model was purely \textbf{based on intuition}, we didn't have enough proof to assume so.Hence we discarded implementation of this model.
-\end{enumerate}
+\begin{itemize}
+\item As stated earlier in the context of a adjacency matrix, link prediction can be viewed as predicting new entries in the matrix of the graph. Again there might be issues with this approach given sparsity of the graph and the fact that absence of an entry in the matrix might not necessarily be interpreted as 0 in the boolean case. 
+
+\item We weren't entirely sure of how the results would turn out but wanted to see what would be the results given this generic assumption and hence proceeded with it.
+
+\item A commonly used technique for analyzing large matrices is to compute a low rank approximation for the given matrix. Different techniques are available for decomposition and we tried two of it:
+\end{itemize}
+
+\subsection{Singular Value Decomposition}
+
+We tried to implement SVD for our given graph and then take the diagnol values to predict the potential links. The feedback given to us was to first try and do a SVD in say MATLAB and plot the diagnol entries of S. We tried that, but the size of the graph was so huge (1169456 x2) that a full adjacency matrix would exceed the maximum array size preference in MATLAB. 
+
+To get an idea of the plot, we took the first 30000 entries and loaded into MATLAB and computed SVD just to get a rough idea of the plot. This might not be the correct approach but we wanted to make sure we did try the methods suggested in the feedback. The plot of diagonal  of the S matrix is shown below:
 
 
-\section{Evaluation of test dataset}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\linewidth]{images/SVD_output.png}
+\captionof{figure}{Plot of diagonal of S matrix(30,000 entries)}
+\label{fig:status}
+\end{center}
+\end{figure}
+
+\begin{itemize}
+\item The plot doesn't have the typical curve like the one which we have for collaborative filtering and hence might not be a good method to apply. Our data in graph.txt is in such a way that it probably makes this approach not suitable for this data.
+
+\item Most of the diagonal entries were zero. This might either be due to the bipartite nature of the graph since edges can't go between nodes on the same side of the graph or it could be that this approach is not correct for this dataset. We weren't entirely sure and from the feedback that we got, we felt this was probably not the correct approach for this dataset.
+ 
+\item But one of the reasons why we wanted to explore this approach was the fact for bipartite graphs, the adjacency matrices is symmetric and it would help with the processing where instead of going for the full adjacency matrix we could have used the sparse matrix for SVD computation.
+
+\item We even tried experimenting with SVD in python using linalg package with the above approach and setting a value for k but we don't publish them in final results.
+
+\item We also tried using the code for UV decomposition using Stochastic Gradient Descent available on the course website, but we weren't able to comprehend and didn't have much clarity with that.
+\end{itemize}
+
+
+\section{Supervised Binary Classifier approach to Link Prediction}
 %Results (or for theoretical project, proofs)
 
-We executed each test example in the models above. The final accuracies are tabulated. Refer ~\ref{tab:accuracy} for the accuracy of each method.
-
-\begin{table*}[ht] 
-\centering
-\begin{tabular}{ |p{4.5cm}|p{3cm} |}
-\hline
-\textbf{Methods} & \textbf{Accuracy}\\ \hline
-SVM using vowpal wabbit	&	67.03  \\  \hline
-RF using scikit	&	64.58  \\  \hline
-Custom SVM using SGD one vs all &  61.96  \\  \hline
-Custom RF (Bagging of Decision tree) one vs all &  59.19  \\  \hline
-\end{tabular}
-\caption{Accuracies for multiclass classification} 
-\label{tab:accuracy} 
-\end{table*} 
-
-As per paper\cite{DBLP:journals/corr/CorreaS13}, prediction based on both user and post datasets was 73%.
-
-\subsection{Inference about the result}
-%What did you learn?
-AgeofPost, CBCount - number of code blocks, Reputation at post creation date and BodyLength-length of the post were the most relevant features. Most of the decision trees created for bagging had these 4 features in common. SVM weight vector values for these 4 features were among the top 5 as well. Reasoning about this higher weights would give the intuition that higher the weight more it will contribute to the argmax for one vs all.
-
+\section{ Results and Evaluation}
 
 \section{Conclusion}
-The features used which were based on the posts, tags and user information did a decent enough job for the prediction model. The baselined features were slightly limited, coming to think of it in broader perspective and some more additional features or other derived features which could have been obtained from the user and post data could have improved the accuracies of our model. 
-
-We see that the vowpal wabbit implementation did relatively better than our model but the fact that we were able to implement a basic multi-class classification was satisfying. Also the performance provided by scikit for the random forests was also slightly better because of the internally optimized python code. 
-
-Additionally the text sentiment analysis and text comparison in stack overflow database would lead to better results in prediction of whether a stack overflow question will be closed. This is mainly because the content of the question plays a very important role in the diagnosis of whether the question will be closed.
-
-In conclusion we were able to build a multi-class classifier which could predict the status of a question on StackOverflow and the results could be used to then determine if the question should be closed or not.
 
 \section{Difficulties faced in implementation}
 \begin{enumerate}
-\itemsep0em
-\item First and foremost, we needed to preprocess the data for vowpal wabbit in vw format.
-\item We faced too many installation issues for Vowpal wabbit. We didn't have a clear man page for commands to be used unlike scikit.
-\item We also needed to preprocess data for custom implementations.
-\item Since we implemented bagging(ensemble) of decision trees for class homeworks, - Custom RF (Bagging of Decision tree) One Vs all was relatively easy.
-\item Custom SVM One vs All implementation involved creating SVM model objects for each hypothesis similar to Custom RF.
+
+\item 
+\item 
+\item 
+\item 
 \end{enumerate}
 
 
@@ -380,12 +377,10 @@ In conclusion we were able to build a multi-class classifier which could predict
 %If you had much more time, how would you continue the project?
 
 \begin{itemize}
-\itemsep0em
-\item We assumed 0 or 1 for real valued features for ease of implementation, which could be improved to include more values to increase accuracy of prediction.
-\item Due to time crunch, we were not able to increase the number of random sub-samples selected for random forest.
-\item We could easily find out the link to related user data set, which is not available now. If we had the link, the our prediction accuracies might have been closer to the paper \cite{Lezina_predictclosed}.
-\item  The text in the post could be represented as a vector using the tf-idf-weight technique or the Latent  Dirichlet Allocation(LDA). We could explore more on this.
-\item While brainstorming, we had seen combinations of Decision Tree and SVM method called DTSVM in the paper\cite{5695459}. DTSVM is a faster algorithm which produces equivalently good prediction accuracies.
+\item 
+\item 
+\item
+\item 
 \end{itemize}
 
 
@@ -408,16 +403,10 @@ In conclusion we were able to build a multi-class classifier which could predict
     
     \bibitem{nine} https://www3.nd.edu/~dial/papers/ICDM12b.pdf
     
+    \bibitem{ten} F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P.Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M.Perrot, and E. Duchesnay. Scikit-learn: Machine Learning in Python. In Journal of MachineLearning Research, 12:2825-2830.
+    
 \end{thebibliography}
 
 
-%
-%
-%
-%{
-%\small 
-%\bibliographystyle{acm}
-%\bibliography{report}
-%}
 
 \end{document}

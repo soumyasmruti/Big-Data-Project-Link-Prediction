@@ -1,0 +1,20 @@
+Effective methods for link prediction could be used to analyze such a social network, and suggest promising interactions or collaborations that have not yet been utilized within the organization.
+In a different vein, research in security has recently begun to emphasize the role of social network analysis, largely motivated by the problem of monitoring terrorist networks; link prediction in this context allows one to conjecture that particular individuals are working together even though their interaction has not been directly observe.
+
+
+Pros and Cons of Link Prediction Model:
+
+The link prediction problem is also related to the problem of inferring missing links from an observed network: in a number of domains, one constructs a network of interactions based on observable data and then tries to infer additional links that, while not directly visible, are likely to exist [8, 22, 26]. This line of work differs from our problem formulation in that it works with a static snapshot of a network, rather than considering network evolution; it also tends to take into account specific attributes of the nodes in the network, rather than evaluating the power of prediction methods based purely on the graph structure.
+
+
+Data and Experimental Setup:
+
+Taking snapshots and working with test and training sets idea was primarily obtained from 
+Kleinberg and Liben-Nowell paper 
+
+Suppose we have a social network G = hV, Ei in which each edge e = hu, vi ∈ E represents
+an interaction between u and v that took place at a particular time t(e). We record multiple
+interactions between u and v as parallel edges, with potentially different time-stamps. For two times t < t0, let G[t,t0] denote the subgraph of G consisting of all edges with a time-stamp between t and t0. Here, then, is a concrete formulation of the link prediction problem. We choose four times t0 < t0' < t1 < t1', and give an algorithm access to the network G[t0,t00]; it must then output a list of edges, not present in G[t0,t00], that are predicted to appear in the network G[t1,t01]. We refer to [t0,t00] as the training interval and [t1,t01] as the test interval.
+
+Of course, social networks grow through the addition of nodes as well as edges, and it is not sensible to seek predictions for edges whose endpoints are not present in the training interval. Thus, in evaluating link prediction methods, we will generally use two parameters κtraining and κtest (each set to 3 below), and define the set Core to be all nodes incident to at least κtraining edges in G[t0, t00] and at least κtest edges in G[t1,t01]. We will then evaluate how accurately the new edges between
+elements of Core can be predicted.

@@ -1,0 +1,30 @@
+\BOOKMARK [1][-]{section.1}{Motivation}{}% 1
+\BOOKMARK [1][-]{section.2}{Introduction}{}% 2
+\BOOKMARK [1][-]{section.3}{Formal Problem Description}{}% 3
+\BOOKMARK [1][-]{section.4}{Definitions}{}% 4
+\BOOKMARK [1][-]{section.5}{Assumptions}{}% 5
+\BOOKMARK [1][-]{section.6}{Scope}{}% 6
+\BOOKMARK [1][-]{section.7}{Prior Work}{}% 7
+\BOOKMARK [1][-]{section.8}{Dataset and features used}{}% 8
+\BOOKMARK [2][-]{subsection.8.1}{Major Dataset used for results}{section.8}% 9
+\BOOKMARK [2][-]{subsection.8.2}{Dataset creation}{section.8}% 10
+\BOOKMARK [2][-]{subsection.8.3}{Real valued features modification}{section.8}% 11
+\BOOKMARK [2][-]{subsection.8.4}{Baselined features}{section.8}% 12
+\BOOKMARK [2][-]{subsection.8.5}{Post features}{section.8}% 13
+\BOOKMARK [2][-]{subsection.8.6}{Training and test examples information}{section.8}% 14
+\BOOKMARK [1][-]{section.9}{Vowpal wabbit and scikit}{}% 15
+\BOOKMARK [2][-]{subsection.9.1}{SVM using Vowpal Wabbit}{section.9}% 16
+\BOOKMARK [2][-]{subsection.9.2}{Random Forest\(RF\) using scikit}{section.9}% 17
+\BOOKMARK [1][-]{section.10}{Custom implementation}{}% 18
+\BOOKMARK [2][-]{subsection.10.1}{Ideas used from the class/course material}{section.10}% 19
+\BOOKMARK [3][-]{subsubsection.10.1.1}{Multiclass classification one vs all}{subsection.10.1}% 20
+\BOOKMARK [3][-]{subsubsection.10.1.2}{Random forest using bagging \046 one vs all}{subsection.10.1}% 21
+\BOOKMARK [3][-]{subsubsection.10.1.3}{SVM using SGD \046 one vs all}{subsection.10.1}% 22
+\BOOKMARK [3][-]{subsubsection.10.1.4}{Ensembles of Boosted Decision trees \046 one vs all}{subsection.10.1}% 23
+\BOOKMARK [1][-]{section.11}{Ideas Explored but not used}{}% 24
+\BOOKMARK [2][-]{subsection.11.1}{Combination of SVM and Decision Tree}{section.11}% 25
+\BOOKMARK [1][-]{section.12}{Evaluation of test dataset}{}% 26
+\BOOKMARK [2][-]{subsection.12.1}{Inference about the result}{section.12}% 27
+\BOOKMARK [1][-]{section.13}{Conclusion}{}% 28
+\BOOKMARK [1][-]{section.14}{Difficulties faced in implementation}{}% 29
+\BOOKMARK [1][-]{section.15}{Future Work}{}% 30

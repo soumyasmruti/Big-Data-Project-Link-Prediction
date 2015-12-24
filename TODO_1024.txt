@@ -1,0 +1,17 @@
+TODO List( 10/24) 
+=================
+
+
+1. Verify if the graph.txt values are correct. It doesn't look right to me. Verify it with source code and try to get some reasonable results.
+
+2. Complete the similarity code in Spark.
+
+3. Complete the svd code in Spark and also please run the code provided by Hari for UV decomposition and tell me what you understood from it.
+
+4. Complete the random_walks.py in Spark. you can follow the same thing.
+
+5. Need description for xgboost in the report to be written. Also need code for xgboost. Even if it is python code try to use it for our example. This is very important because this is something which we are doing by ourselves and it should be there to avoid any sort of suspicion. Please please please have this code. 
+
+6. the evaluation measure for all the methods which we are going to use is recall and precision. That is given a snapshot at this time when you predict a future link we have to count how many of them are correct and wrong and that will give recall and precision. Please come up with values which can be used for the results and evaluation. Look at the existing report and see what will be good values for us. I have no clue about this and I want you take care of this.
+
+6. And regarding report, I have written what I know and understood. I will see what I can fill tomo based on your results but it will be much easier for you to fill those sections. Please take a look at the report and correct anything which is wrong and additional points wherever needed.

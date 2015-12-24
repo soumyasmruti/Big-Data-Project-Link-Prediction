@@ -48,15 +48,14 @@ def random_walker(typeVar, date, bool_edge=False):
         edges = graph.edges()
         for e in iterator(edges):
             i, j = str(e[0]), str(e[1])
-            if i not in reviews or j not in reviews[n1]:
+            if i not in reviews or j not in reviews[i]:
                 i, j = j, i
             graph[e[0]][e[1]]['weight'] = 1.0 / ((date - convert_date(reviews[i][j][0])).days + 180)
         del reviews 
         
     adj_mat = net.adjacency_matrix(graph)
     inv_deg_mat = sparse.diags([[1.0 / adj_mat.getrow(i).sum() for i in range(adj_mat.shape[0])]], [0])
-    tra_mat = inv_deg_mat.dot(adj_mat)
-
+    
     if block_bool:
         inv_deg_mat = sc.parallelize(inv_deg_mat)
         adj_mat = sc.parallelize(adj_mat)
@@ -68,7 +67,8 @@ def random_walker(typeVar, date, bool_edge=False):
         b1 = b.map(lambda (k,v): (k[0], (k[1],v)))
         c = a1.join(b1).map(lambda (k,v): ((v[0][0], v[1][0]), v[0][1]*v[1][1])).reduceByKey(add) 
         sorted(c.collect())
-    
+    tra_mat = inv_deg_mat.dot(adj_mat)
+
     for u in iterator(matrix):
         i = int(u)
         p = np.zeros(tra_mat.shape[0])

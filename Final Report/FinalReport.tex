@@ -96,7 +96,9 @@ Bipartite graph: A bipartite graph or bigraph is a set of graph vertices decompo
 
 \section{Scope}
 
-Our main stating is that the approaches used in our project could potentially be applied to a different data set which exists as or can be modeled as bipartite graph and even if the example data set which we have taken might not sufficiently convince that, we wanted to make it clear that our scope lies in the understanding of methods/measures which could be applied for link prediction in bipartite graphs. Results and other observations stated in later sections are our understanding but the bigger picture could or could not be different. 
+\begin{itemize}
+\item[] Our main stating is that the approaches used in our project could potentially be applied to a different data set which exists as or can be modeled as bipartite graph and even if the example data set which we have taken might not sufficiently convince that, we wanted to make it clear that our scope lies in the understanding of methods/measures which could be applied for link prediction in bipartite graphs. Results and other observations stated in later sections are our understanding but the bigger picture could or could not be different. 
+\end{itemize}
 
 \section{Prior Work}
 
@@ -177,10 +179,9 @@ The most important aspect of our problem is to model the given dataset as a bipa
 
 \item These two files users.json and hotels.json would then help us model the bipartite graph as we would have all the users on one side of the graph and we would have all the hotels on the other side of the graph and an edge goes between user and hotel if a user has written a review  for that hotel.
 
-\item As stated earlier that prediction will be done based on the snapshots of the network or graph created at different times. We used t(training) as Jan 1, 2013 meaning all data before it and t'(test) as Jul 1,2013  meaning all data between t and t' to create train and test data respectively. To get the required graph in terms of nodes and edges,we had to do further processing.
+\item As stated earlier that prediction will be done based on the snapshots of the network or graph created at different times. We used t(training) as Feb 15, 2011 meaning all data before it and t'(test) as Feb 15, 2012  meaning all data between t and t' to create train and test data respectively. To get the required graph in terms of nodes and edges,we had to do further processing.
 
 \item From the hotels and users file, we picked out the IDs and then assigned a unique ID for each of the HotelID and UserID which is a running sequence so that there is better clarity when we look at the graph data file. Once IDs were created we then created the graph.txt file for both test and train data which will contain all the edges in the current dataset represented by nodes on either side.
-
 \item Once we created graph.txt to get statistics about the graph, we used some of the built in methods from SNAP.py package and also referred to code blocks online to get the following details:
 \begin{table}[ht]
 	\begin{tabular}{ |p{5cm}|p{2cm} |}
@@ -199,9 +200,9 @@ The most important aspect of our problem is to model the given dataset as a bipa
 
 \end{itemize}
 
-\subsection{Creating examples from input data}
+\subsection{Creating matrix from input data}
 
-We also wanted to experiment with supervised learning methods for link prediction and hence we had to create examples so that it could be used by our classifier to predict the output. During the creation of examples, we did a further filtering to ensure data is not overly skewed and it is at an acceptable level. This idea was obtained from one of the projects of the Stanford Data Mining Class handled by Jure Leskovec. The following filtering was done:
+We also wanted to experiment with supervised learning methods for link prediction and hence we had to create a matrix file so that it could be used by our classifier to predict the output. During the creation of matrix, we did a further filtering to ensure data is not overly skewed and it is at an acceptable level. This idea was obtained from one of the projects of the Stanford Data Mining Class handled by Jure Leskovec. The following filtering was done:
 
 \begin{enumerate}
 \item Only taking users who have been active in the last six months. To do this we made use of the Last Review Date field which we had included while creating users.json.
@@ -209,30 +210,9 @@ We also wanted to experiment with supervised learning methods for link predictio
 \item Only taking hotels which are at a distance 3 or 3 hop distance from current user as candidate edges. To compute the hop distance we made use of methods in SNAP.py package
 \end{enumerate}
 
-For creating examples we again made use of graph.txt as the input and also took data snapshots at two different times t and t' to create train and test examples.
+For creating matrix we again made use of graph.txt as the input and also took data snapshots at two different times t and t' to create train and test matrix.
 
 The way users review hotels evolves over time and so test and training may have huge differences but we assume that those differences would be small enough that supervised learning would still be effective. We try to see if that is the case. Furthermore we felt it was justified in the sense even in real world scenario this is how data would probably end up being because we would have information only about the previous links.
-
-\subsection { Statistics on examples and positive negative stuff}
-
-$<<<<<<<<<<<<< $TO BE COMPLETED \\
-I did not understand what is being done there. But I realize it is important for the supervised learning part. So please kindly fill in your understanding and then tell what those values represent \\
-Also\\
-describe\\
-about \\
-the\\
-matrix.json file\\
-and \\
-edges.txt\\
-which gets created\\
-in this \\
-section\\
-I don't understand \\
-what \\
-they are\\
-doing\\
-
-$>>>>>>>>>>>>>>>>>>>>>>$
 
 
 \section{Similarity Measures for Link Prediction in Bipartite Graphs}
@@ -243,7 +223,7 @@ $>>>>>>>>>>>>>>>>>>>>>>$
 
 \item Metrics used in \cite{four} compare the neighbors of two nodes in the edge. But to make it for bipartite graphs we have to modify it. Because of the property of bipartite graphs nodes on the same side or neighbors of nodes on opposite sides do not intersect. Hence we would want to model them in such a way that we have both sets of nodes to contain the same type of node i.e users/ hotels.
 
-\item To do this, we choose two sets S(x) and S(y) for our similarity metrics given nodes(x,y) on opposite sides of a graph. We define S(x) and S(y) in a way which is similar to how we used hop distances for creating examples.
+\item To do this, we choose two sets S(x) and S(y) for our similarity metrics given nodes(x,y) on opposite sides of a graph. We define S(x) and S(y) in a way which is similar to how we used hop distances for creating matrix.
 
 \begin{itemize}
 \item S(x) represents nodes which are 2 hops away from x. Effectively this produces nodes on same side of the network as x because traveling two hops would be equivalent to going to x's neighbor and then coming back again to the same side of x. 
@@ -251,7 +231,7 @@ $>>>>>>>>>>>>>>>>>>>>>>$
 \item S(y) represents y's neighbors. These represent nodes on opposite side of y, which is nothing but same side of x, because we have modeled the graph as bipartite in this case.
 \end{itemize}
 
-\item To compute 2 hop distance we used SNAP package's GetNodesAtHop() method to get our required values. Also SNAP modules other methods for graph processing proved useful. We found this package to be useful when we were stumbling across different datasets in our initial search for project datasets.
+\item To compute 2 hop distance we used SNAP package's GetNodesAtHop() method to get our required values. Also SNAP modules other methods for graph processing proved useful. We found this package to be useful when we were stumbling across different data sets in our initial search for project data sets.
 
 \item Both the sets from the description above will comprise of node's on the side of x.  This enables us to use them to compute distance metrics. We used two such metrics in our project:
 
@@ -281,7 +261,7 @@ $|S(x) \cap S(y)|$
 
 \item In other words users who review hotels that you do are likely to be similar to you. It is also reasonable to further assume if lot of them review the same hotel and there is a large overlap between them and s(x) then you are also likely to review that hotel in future. This in a way helps us to uncover the new links which might appear in the graph in future which is our primary motive.
 
-\item As stated in the first, this is an assumption which we make and think is reasonable although it has been pointed out that this isn't so straightforward. But the bigger picture from this is, we learnt how to modify existing similarity metrics to be applied to a bipartite case, which was our primary goals.
+\item As stated in the first, this is an assumption which we make and think is reasonable although it has been pointed out that this isn't so straightforward. But the bigger picture from this is, we learned how to modify existing similarity metrics to be applied to a bipartite case, which was our primary goals.
 
 \end{itemize}
 
@@ -363,6 +343,7 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
 
 \item We had initially proposed to experiment with the xgboost algorithm as we felt it could potentially take advantage of parallel processing but its adaptation wasn't easier.
 
+\subsection{Gradient Boosting Classifier}
 \item Instead we went for a slightly easier approach of using Gradient Boosting Trees (GBT). We chose this one, as considerable work had been done using SVM and Logistic Regression in this area. Also we were familiar with Decision Trees and Ensembles from our Machine Learning class and also had implemented variants of them for that course.
 
 \item GBT is essentially an ensemble technique which uses smaller decision trees. The classification problem for our case was given two nodes will the classifier predict a yes or no on whether a link will occur between the nodes in future.
@@ -372,26 +353,43 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
 \item In addition to using those measures as features we also tried adding other features in terms of degree of user, degree of hotels and the rating because we felt we had less number of features. But they did not change the results significantly.
 
 \item We used scikit package's methods to help out with some of the implementation.
+
+\subsection{Random Forest Classifier}
+\item Out of curiosity we also tried some more libraries from the scikit package and once such classifier we used was Random Forest Classifier.
+
+\item Random forests is a notion of the general technique of random decision forests that are an ensemble learning method for classification, regression and other tasks.
+
+\item Random Decision Forest is very effective in eliminating noise in the model input data.  Given a long list of input variables and a potentially sparse data set, it is very likely that any predictive model will discover spurious relationships between those inputs and the chosen target variable.  This results in overfitting and the model does not generalize well enough to future input it has not seen.
+
+\subitem Because Random Forest builds many trees using a subset of the available input variables and their values, it inherently contains some underlying decision trees that omit the noise generating variable/feature(s).  In the end, when it is time to generate a prediction a vote among all the underlying trees takes place and the majority prediction value wins. 
 \end{itemize}
 
 \section{ Results and Evaluation}
 
 \begin{itemize}
+\item Our algorithms assign a score to the existence of each possible edge at t'. We evaluated these scores according to the following metric: 
+\subitem area under curve (auc): The area under the ROC curve generated from the scores produced from our classifiers. This reflects the quality of an algorithm as an overall predictor of the network structure in the future. 
 
-\item PLEASE FILL THIS UP. ADD ATLEAST 4 OR 5 BULLTED POINTS. REFER TO THE SAMPLE REPORT
+\subitem We used the scikit metrics module's $roc\_auc\_score$ measure to calculate this accuracy. 
 
-\item DEFINITELY SHOULD HAVE SOME TABLE OF RESULTS. DON'T JUST WRITE ALL RESULTS IN TEXT. MODIFY THE TABLE BELOW ACCORDINGLY WITH RESULTS FOR THE DIFFERENT MEASURES. DON'T FILL FOR SVD. I HAD EARLIER MENTIONED IN THE REPORT THAT WE DIDN'T GET IT CORRECTLY.
+\item Overall, Gradient Boosting classifier and Random Forest Classifier proved to be the most effective technique.
+
+\item Common-neighbor similarity performed better than Jaccard as expected. Among both user and hotel, the user-centric one proved superior, perhaps because most users have reviewed a very small number of hotels, so looking at their neighbors provides little information compared to looking at nodes at distance 2 from a user. 
+
+\item With all the techniques, having a good accuracy means that a new link that does occur will be given a high score compared to the scores of potential links that do not occur. 
 
 \begin{table}[ht]
 	\begin{tabular}{ |p{5cm}|p{2cm} |}
 		\hline
-		\textbf {Property} & \textbf{Value}\\ \hline
-			&	 \\  \hline
-			&	\\  \hline
-			&	 \\  \hline
-				&	\\  \hline
+		\textbf {Property}  & \textbf{Accuracy}\\ \hline
+			Jaccard for Users  & 0.439\\  \hline
+			Jaccard for Hotels  & 0.411	\\  \hline
+			Common-Neighbors for Users  & 0.461	 \\  \hline
+            Common-Neighbors for Hotels  & 0.487	 \\  \hline
+			Random Walks &	 0.563 \\  \hline
+			Gradient Boosting&  0.613 \\  \hline
+            Random Forest Classifier & 0.598	 \\  \hline
 
-		
 	\end{tabular}
 	\caption{Results} 
 	\label{tab:dist} 
@@ -404,23 +402,28 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
 
 \begin{itemize}
 
-\item AMONG THE DIFFERENT TECHNIQUES WHICH WE IMPLEMENTED, ******* X ********* SEEMED TO BE THE BEST TECHNIQUE FOR LINK PREDICTION IN BIPARTITE GRAPHS FOR THE GIVEN DATASET.
+\item For this project we took bipartite graphs and tried to implement a variety of link prediction techniques to them. We found the commonly used link prediction similarity metrics could also be effective on bipartite networks if they were modified to be applied over a larger set of close nodes than just neighbors.
 
-\item Some brief explanation about why it is best and which method was worst
+\item  The supervised classifiers were by far the best method in terms of accuracy, meaning it is the strongest at predicting overall what new edges will be in the network in the future.
 
+\item We had issues with trying out low rank approximation techniques like SVD or UV decomposition for the given data set and hence have not included it in the results table.
+
+\item One more thing we could have tried is the supervised random walks, which wasn't looked at due to lack of bandwidth and as found out by Lars Backstrom , Jure Leskovec in \cite{one} it is also a very good technique in link prediction.
 
 \end{itemize}
  
-\section{ Difficulties faced and Lessons learnt}
+\section{ Difficulties faced and Lessons learned}
 \begin{enumerate}
 
-\item One major takeaway from this project was the fact a good dataset or a simpler problem to solve using different techniques is definitely more practical and helpful than having a difficult problem at hand. But at the same time having to work with this dataset which we chose taught us a few things
-\item We still believe that the results may not be a great reflection for this dataset of ours but as we had mentioned in the beginning these are potential techniques/methods which could be applied to any problem or network which can be modeled as bipartite graphs and it would most probably work well for most cases
-\item Selection of datasets play a very important role and is equally important as selecting the problem to tackle.
-\item We faced difficulties particularly with Decomposition techniques and its interpretation of results for this dataset.
+\item One major takeaway from this project was the fact a good data set or a simpler problem to solve using different techniques is definitely more practical and helpful than having a difficult problem at hand. But at the same time having to work with this data set which we chose taught us a few things
+\item We still believe that the results may not be a great reflection for this data set of ours but as we had mentioned in the beginning these are potential techniques/methods which could be applied to any problem or network which can be modeled as bipartite graphs and it would most probably work well for most cases
+\item Selection of data sets play a very important role and is equally important as selecting the problem to tackle.
+\item We faced difficulties particularly with Decomposition techniques and its interpretation of results for this data set.
 \item  Jaccard similarity measures provides a good baseline measure.
 \item Although we did not do a lot of supervised learning methods, it points towards the direction that it can do better for the case of link prediction provided we have all the required inputs.
-\item  
+
+\item Running the code takes a lot of time especially the similarity metrics for a large graph. There are ways in which it could be optimized and they could provide slightly better running times.
+  
 \end{enumerate}
 
 
@@ -429,8 +432,8 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
 
 \begin{itemize}
 \item One definite extension would be to perform supervised random walks where edge weights are learned by unsupervised methods and then given as inputs to the supervised methods. That could potentially improve the results.
-\item SVD did not work correctly but we still feel matrix sketching approaches would be able to do a good job and if we had a good dataset or more regularized matrix we could potentially see the utility of low rank approximation methods.
-\item
+\item SVD did not work correctly but we still feel matrix sketching approaches would be able to do a good job and if we had a good data set or more regularized matrix we could potentially see the utility of low rank approximation methods.
+\item Using a better data set to perform our calculations.
 \end{itemize}
 
 
@@ -453,7 +456,10 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
     
     \bibitem{nine} https://www3.nd.edu/~dial/papers/ICDM12b.pdf
     
-    \bibitem{ten} F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P.Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M.Perrot, and E. Duchesnay. Scikit-learn: Machine Learning in Python. In Journal of MachineLearning Research, 12:2825-2830.
+    \bibitem{ten} F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P.
+Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M.
+Perrot, and E. Duchesnay. Scikit-learn: Machine Learning in Python. In Journal of Machine
+Learning Research, 12:2825-2830.
     
 \end{thebibliography}
 

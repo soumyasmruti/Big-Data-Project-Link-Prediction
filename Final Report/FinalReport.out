@@ -9,21 +9,22 @@
 \BOOKMARK [2][-]{subsection.8.1}{Dataset used for the Project}{section.8}% 9
 \BOOKMARK [2][-]{subsection.8.2}{Dataset description}{section.8}% 10
 \BOOKMARK [2][-]{subsection.8.3}{Data processing}{section.8}% 11
-\BOOKMARK [2][-]{subsection.8.4}{Creating examples from input data}{section.8}% 12
-\BOOKMARK [2][-]{subsection.8.5}{ Statistics on examples and positive negative stuff}{section.8}% 13
-\BOOKMARK [1][-]{section.9}{Similarity Measures for Link Prediction in Bipartite Graphs}{}% 14
-\BOOKMARK [2][-]{subsection.9.1}{Jaccard Similarity}{section.9}% 15
-\BOOKMARK [2][-]{subsection.9.2}{Common Neighbors}{section.9}% 16
-\BOOKMARK [2][-]{subsection.9.3}{Note}{section.9}% 17
-\BOOKMARK [2][-]{subsection.9.4}{Intuition behind similarity metrics and link prediction}{section.9}% 18
-\BOOKMARK [1][-]{section.10}{Random walk approach to Link Prediction}{}% 19
-\BOOKMARK [2][-]{subsection.10.1}{Definition}{section.10}% 20
-\BOOKMARK [2][-]{subsection.10.2}{Ideas used from the class/course material}{section.10}% 21
-\BOOKMARK [2][-]{subsection.10.3}{Description and Implementation}{section.10}% 22
-\BOOKMARK [1][-]{section.11}{Low rank approximation technique to Link Prediction}{}% 23
-\BOOKMARK [2][-]{subsection.11.1}{Singular Value Decomposition}{section.11}% 24
-\BOOKMARK [1][-]{section.12}{Supervised Binary Classifier approach to Link Prediction}{}% 25
-\BOOKMARK [1][-]{section.13}{ Results and Evaluation}{}% 26
-\BOOKMARK [1][-]{section.14}{Conclusion}{}% 27
-\BOOKMARK [1][-]{section.15}{ Difficulties faced and Lessons learnt}{}% 28
-\BOOKMARK [1][-]{section.16}{Future Work}{}% 29
+\BOOKMARK [2][-]{subsection.8.4}{Creating matrix from input data}{section.8}% 12
+\BOOKMARK [1][-]{section.9}{Similarity Measures for Link Prediction in Bipartite Graphs}{}% 13
+\BOOKMARK [2][-]{subsection.9.1}{Jaccard Similarity}{section.9}% 14
+\BOOKMARK [2][-]{subsection.9.2}{Common Neighbors}{section.9}% 15
+\BOOKMARK [2][-]{subsection.9.3}{Note}{section.9}% 16
+\BOOKMARK [2][-]{subsection.9.4}{Intuition behind similarity metrics and link prediction}{section.9}% 17
+\BOOKMARK [1][-]{section.10}{Random walk approach to Link Prediction}{}% 18
+\BOOKMARK [2][-]{subsection.10.1}{Definition}{section.10}% 19
+\BOOKMARK [2][-]{subsection.10.2}{Ideas used from the class/course material}{section.10}% 20
+\BOOKMARK [2][-]{subsection.10.3}{Description and Implementation}{section.10}% 21
+\BOOKMARK [1][-]{section.11}{Low rank approximation technique to Link Prediction}{}% 22
+\BOOKMARK [2][-]{subsection.11.1}{Singular Value Decomposition}{section.11}% 23
+\BOOKMARK [1][-]{section.12}{Supervised Binary Classifier approach to Link Prediction}{}% 24
+\BOOKMARK [2][-]{subsection.12.1}{Gradient Boosting Classifier}{section.12}% 25
+\BOOKMARK [2][-]{subsection.12.2}{Random Forest Classifier}{section.12}% 26
+\BOOKMARK [1][-]{section.13}{ Results and Evaluation}{}% 27
+\BOOKMARK [1][-]{section.14}{Conclusion}{}% 28
+\BOOKMARK [1][-]{section.15}{ Difficulties faced and Lessons learned}{}% 29
+\BOOKMARK [1][-]{section.16}{Future Work}{}% 30

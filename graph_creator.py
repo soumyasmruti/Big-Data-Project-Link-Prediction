@@ -35,7 +35,7 @@ def convert_date(dic):
 def create_final_json(n_id, nids, inp, out):
     return write_json({n_id(x): y for x, y in load_json(inp).iteritems() if n_id(x) in nids}, out)
 
-def make_graph(t1, t2, out):
+def make_graph(t1, out):
     
     nid = IdsAsInt()
     reviews_it = {}
@@ -53,7 +53,7 @@ def make_graph(t1, t2, out):
 
     create_final_json(lambda hd: nid['h' + hd], nids, './data/created/hotels.json', out+'hotels.json')
 
-    with open(out+'graph.txt', 'w') as graph, open(out+'edges.txt', 'w') as edges:
+    with open(out+'graph.txt', 'w') as graph:
         review_data = defaultdict(lambda: defaultdict(list))
         for key, review in reviews_it.iteritems():
             ukey = nid['u' + review['Author']]
@@ -63,8 +63,7 @@ def make_graph(t1, t2, out):
                 if date < t1:
                     review_data[ukey][hkey].append(review)
                     graph.write("{:} {:}\n".format(ukey, hkey))
-                elif date < t2:
-                    edges.write("{:} {:}\n".format(ukey, hkey))
+    
 
         for r in review_data:
             for ur in review_data[r]:
@@ -73,8 +72,8 @@ def make_graph(t1, t2, out):
         write_json(review_data, out+"review.json")
         
 if __name__ == '__main__':
-    make_graph(datetime.date(2011, 2, 15), datetime.date(2011, 9, 15), './data/train/')
-    make_graph(datetime.date(2012, 2, 15), datetime.date(2012, 9, 15), './data/test/')
+    make_graph(datetime.date(2011, 2, 15), './data/train/')
+    make_graph(datetime.date(2012, 2, 15), './data/test/')
     
 
 

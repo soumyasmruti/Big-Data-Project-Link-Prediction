@@ -1,9 +1,9 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
-import snap, datetime, math, json
+import snap, datetime, json
 
 def load_json(fname):
     with open(fname) as f:
@@ -16,6 +16,7 @@ def write_json(d, fname):
 def hopper(nodeid, graph):
     hop_n = snap.TIntV()
     snap.GetNodesAtHop(graph, nodeid, 2, hop_n, True)
+    del graph
     return {hop for hop in hop_n}  
 
 def cal_hop2_dis(nodes, matrix, graph, checkstr, nodes_2hop):
@@ -31,9 +32,10 @@ def cal_hop2_dis(nodes, matrix, graph, checkstr, nodes_2hop):
                     nodeid = int(j)
                     if nodeid in nodes:
                         hops[nodeid] = hopper(nodeid, graph)
+    del nodes, matrix, graph, nodes_2hop
     return hops
             
-def get_hotels_neighbour(nodes, matrix, graph):
+def get_hotels_neighbor(nodes, matrix, graph):
     neighbors = {}
     for i in matrix:
         for j in matrix[i]:
@@ -41,18 +43,23 @@ def get_hotels_neighbour(nodes, matrix, graph):
                 temp = snap.TIntV()
                 snap.GetNodesAtHop(graph, int(j), 1, temp, True)
                 neighbors[int(j)] = {t for t in temp}
+    del nodes, matrix, graph
     return neighbors
     
-def get_user_neighbors(nodes, matrix, graph):
+def get_user_neighbor(nodes, matrix, graph):
+    neighbors = {}
     for i in matrix:
         if int(i) not in neighbors and int(i) in nodes:
             temp = snap.TIntV()
-            snap.GetNodesAtHop(G, int(i), 1, temp, True)
+            snap.GetNodesAtHop(graph, int(i), 1, temp, True)
             neighbors[int(i)] = {t for t in temp}
+            
+    del nodes, matrix, graph
     return neighbors
 
 
-def cal_similarity(s, f, nodes_2hop, neighbors, nodes):
+def cal_similarity(matrix, s, f, nodes_2hop, neighbors, nodes):
+    mat = {}
     for i in matrix:
             for j in matrix[i]:
                 if int(i) in nodes and int(j) in nodes:
@@ -70,27 +77,29 @@ def jaccard(a, b):
 def cn(a, b):
     return len(a.intersection(b))
 
-def hotels(matrix, graph, methods, outfiles):
+def hotels(matrix, graph, sims, out):
+    print "Hotels"
     nodes=[N.GetId() for N in snap.Nodes(graph)]
     nodes_2hop =  {}
     print "Here hotels"
     nodes_2hop = cal_hop2_dis(nodes, matrix, graph, "hotel", nodes_2hop)
     print "Here hotels Neigh"
-    neighbors = get_user_neighbour(nodes, matrix, graph)
+    neighbors = get_user_neighbor(nodes, matrix, graph)
 
     for s, f in zip(sims,out):
-        user_sim = cal_similarity(s, f, nodes_2hop, neighbors, nodes)
+        user_sim = cal_similarity(matrix, s, f, nodes_2hop, neighbors, nodes)
         write_json(user_sim, f)
 
 def users(matrix, graph, sims, out):
+    print "Users"
     nodes=[N.GetId() for N in snap.Nodes(graph)]
     nodes_2hop = {}
     print "Here User"
     nodes_2hop = cal_hop2_dis(nodes, matrix, graph, "users", nodes_2hop)
     print "Here user Neigh"
-    neighbors = get_hotels_neighbour(nodes, matrix, graph)
+    neighbors = get_hotels_neighbor(nodes, matrix, graph)
     for s, f in zip(sims,out):
-        user_sim = cal_similarity(s, f, nodes_2hop, neighbors, nodes)
+        user_sim = cal_similarity(matrix, s, f, nodes_2hop, neighbors, nodes)
         write_json(user_sim, f)
 
         

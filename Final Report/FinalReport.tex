@@ -330,7 +330,7 @@ A random walk is a finite Markov chain that moves through a graph G=(V,E)
 
 \subsection{Singular Value Decomposition}
 
-We tried to implement SVD for our given graph and then take the diagnol values to predict the potential links. The feedback given to us was to first try and do a SVD in say MATLAB and plot the diagnol entries of S. We tried that, but the size of the graph was so huge (1169456 x2) that a full adjacency matrix would exceed the maximum array size preference in MATLAB. 
+We tried to implement SVD for our given graph and then take the diagonal values to predict the potential links. The feedback given to us was to first try and do a SVD in say MATLAB and plot the diagnol entries of S. We tried that, but the size of the graph was so huge (1169456 x2) that a full adjacency matrix would exceed the maximum array size preference in MATLAB. 
 
 To get an idea of the plot, we took the first 30000 entries and loaded into MATLAB and computed SVD just to get a rough idea of the plot. This might not be the correct approach but we wanted to make sure we did try the methods suggested in the feedback. The plot of diagonal  of the S matrix is shown below:
 
@@ -357,19 +357,70 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
 
 
 \section{Supervised Binary Classifier approach to Link Prediction}
-%Results (or for theoretical project, proofs)
+
+\begin{itemize}
+\item Our interest in Machine Learning wanted us to explore some Machine Learning technique which could be applied to our problem and from several works in \cite{one,five,seven} we got an understanding of how binary classification could be applied to link prediction.
+
+\item We had initially proposed to experiment with the xgboost algorithm as we felt it could potentially take advantage of parallel processing but its adaptation wasn't easier.
+
+\item Instead we went for a slightly easier approach of using Gradient Boosting Trees (GBT). We chose this one, as considerable work had been done using SVM and Logistic Regression in this area. Also we were familiar with Decision Trees and Ensembles from our Machine Learning class and also had implemented variants of them for that course.
+
+\item GBT is essentially an ensemble technique which uses smaller decision trees. The classification problem for our case was given two nodes will the classifier predict a yes or no on whether a link will occur between the nodes in future.
+
+\item Other primary reason why we explored with different methods was the fact that, those methods or measures could be used as features for supervised learning.
+
+\item In addition to using those measures as features we also tried adding other features in terms of degree of user, degree of hotels and the rating because we felt we had less number of features. But they did not change the results significantly.
+
+\item We used scikit package's methods to help out with some of the implementation.
+\end{itemize}
 
 \section{ Results and Evaluation}
 
+\begin{itemize}
+
+\item PLEASE FILL THIS UP. ADD ATLEAST 4 OR 5 BULLTED POINTS. REFER TO THE SAMPLE REPORT
+
+\item DEFINITELY SHOULD HAVE SOME TABLE OF RESULTS. DON'T JUST WRITE ALL RESULTS IN TEXT. MODIFY THE TABLE BELOW ACCORDINGLY WITH RESULTS FOR THE DIFFERENT MEASURES. DON'T FILL FOR SVD. I HAD EARLIER MENTIONED IN THE REPORT THAT WE DIDN'T GET IT CORRECTLY.
+
+\begin{table}[ht]
+	\begin{tabular}{ |p{5cm}|p{2cm} |}
+		\hline
+		\textbf {Property} & \textbf{Value}\\ \hline
+			&	 \\  \hline
+			&	\\  \hline
+			&	 \\  \hline
+				&	\\  \hline
+
+		
+	\end{tabular}
+	\caption{Results} 
+	\label{tab:dist} 
+\end{table} 
+
+\end{itemize}
+
+
 \section{Conclusion}
 
-\section{Difficulties faced in implementation}
+\begin{itemize}
+
+\item AMONG THE DIFFERENT TECHNIQUES WHICH WE IMPLEMENTED, ******* X ********* SEEMED TO BE THE BEST TECHNIQUE FOR LINK PREDICTION IN BIPARTITE GRAPHS FOR THE GIVEN DATASET.
+
+\item Some brief explanation about why it is best and which method was worst
+
+
+\end{itemize}
+ 
+\section{ Difficulties faced and Lessons learnt}
 \begin{enumerate}
 
-\item 
-\item 
-\item 
-\item 
+\item One major takeaway from this project was the fact a good dataset or a simpler problem to solve using different techniques is definitely more practical and helpful than having a difficult problem at hand. But at the same time having to work with this dataset which we chose taught us a few things
+\item We still believe that the results may not be a great reflection for this dataset of ours but as we had mentioned in the beginning these are potential techniques/methods which could be applied to any problem or network which can be modeled as bipartite graphs and it would most probably work well for most cases
+\item Selection of datasets play a very important role and is equally important as selecting the problem to tackle.
+\item We faced difficulties particularly with Decomposition techniques and its interpretation of results for this dataset.
+\item  Jaccard similarity measures provides a good baseline measure.
+\item Although we did not do a lot of supervised learning methods, it points towards the direction that it can do better for the case of link prediction provided we have all the required inputs.
+\item  
 \end{enumerate}
 
 
@@ -377,10 +428,9 @@ To get an idea of the plot, we took the first 30000 entries and loaded into MATL
 %If you had much more time, how would you continue the project?
 
 \begin{itemize}
-\item 
-\item 
+\item One definite extension would be to perform supervised random walks where edge weights are learned by unsupervised methods and then given as inputs to the supervised methods. That could potentially improve the results.
+\item SVD did not work correctly but we still feel matrix sketching approaches would be able to do a good job and if we had a good dataset or more regularized matrix we could potentially see the utility of low rank approximation methods.
 \item
-\item 
 \end{itemize}
 
 
